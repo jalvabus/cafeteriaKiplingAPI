@@ -19,8 +19,9 @@ exports.createOne = (req, res) => {
     var usuario = new Usuario(req.body);
 
     usuario.tipo = "usuario";
-    usuario.usuario = "kipling2018";
-    usuario.password = "kipling2018";
+    usuario.usuario = req.body.email;
+    usuario.password = req.body.email;
+    usuario.puntos = 0;
 
     console.log(usuario);
 
@@ -74,4 +75,60 @@ exports.deleteOne = (req, res) => {
 
 exports.updateOne = (req, res) => {
 
+}
+
+exports.createAdmin = (req, res) => {
+    var usuario = new Usuario();
+
+    usuario.nombre = "Centro";
+    usuario.apellido_paterno = "Educativo";
+    usuario.apellido_materno = "Kipling";
+    usuario.direccion = "Ojo de Agua";
+    usuario.email = "centro.educativo.kipling@gmail.com";
+    usuario.telefono = "5610966743";
+    usuario.usuario = "kipling2018";
+    usuario.password = "kipling2018";
+    usuario.tipo = "admin";
+    usuario.puntos = 500;
+
+    console.log(usuario);
+
+    usuario.save((err, ciclos) => {
+        if (err) return res.json({
+            mensaje: "error",
+            err: err
+        })
+
+        return res.status(200).json({
+            mensaje: "Administrador Registrado"
+        });
+    })
+}
+
+exports.addPuntos = function (req, res) {
+    Usuario.findByIdAndUpdate({ _id: req.params.id }, { $set: { puntos: req.body.totalPuntos } }, (err, user) => {
+        if (err) return res.json({
+            mensaje: "error",
+            err: err
+        })
+
+        return res.json({
+            mensaje: "Puntos agregados",
+            usuario: user
+        });
+    })
+}
+
+exports.removePuntos = function (req, res) {
+    Usuario.findByIdAndUpdate({ _id: req.params.id }, { $set: { puntos: req.body.totalPuntos } }, (err, user) => {
+        if (err) return res.json({
+            mensaje: "error",
+            err: err
+        })
+
+        return res.json({
+            mensaje: "Puntos agregados",
+            usuario: user
+        });
+    })
 }

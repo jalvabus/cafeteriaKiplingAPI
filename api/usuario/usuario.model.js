@@ -11,6 +11,7 @@ var usuario_schema = new Schema({
     usuario: String,
     password: String,
     tipo: String,
+    puntos: Number,
     alumno: [{
         type: Schema.Types.ObjectId,
         ref: 'Alumno'

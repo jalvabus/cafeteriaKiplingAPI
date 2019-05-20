@@ -10,6 +10,8 @@ router.use('/alumno', require('./alumno'));
 router.use('/usuario', require('./usuario'));
 router.use('/menu', require('./menu'));
 router.use('/pedido', require('./pedido'));
+router.use('/puntos', require('./puntos'));
+router.use('/venta-puntos', require('./venta-puntos'));
 router.use('/paypal', require('./PAYPAL'));
 
 module.exports = router;
