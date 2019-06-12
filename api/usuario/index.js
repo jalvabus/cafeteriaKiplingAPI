@@ -11,6 +11,8 @@ router.delete('/removeAlumno/:id', controller.removeAlumno);
 
 router.post('/addPuntos/:id', controller.addPuntos);
 router.post('/removePuntos/:id', controller.removePuntos);
+
 router.get('/regAdmin', controller.createAdmin);
+router.get('/regSec', controller.createSecretaria);
 
 module.exports = router;

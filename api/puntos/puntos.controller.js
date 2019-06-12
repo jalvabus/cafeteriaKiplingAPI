@@ -26,7 +26,7 @@ exports.createPuntos = (req, res) => {
 }
 
 exports.AddPuntos = (req, res) => {
-    Puntos.findByIdAndUpdate({ _id: req.params.id }, { $set: { totalPuntos: req.body.puntos } }, (err, puntos) => {
+    Puntos.findByIdAndUpdate({ _id: req.params.id }, { $set: { totalPuntos: req.params.total } }, (err, puntos) => {
         if (err) return res.status(500).json({
             mensaje: "error",
             err: err

@@ -3,22 +3,43 @@ var mongoose = require('mongoose');
 
 exports.getAll = (req, res) => {
     Pedido.find((err, pedidos) => {
-        if (err) return res.status(500).json({error: err});
+        if (err) return res.status(500).json({ error: err });
 
         return res.status(200).json(pedidos);
     })
-    .populate({
-        path: 'usuario',
-        model: 'Usuario'
+        .populate({
+            path: 'usuario',
+            model: 'Usuario'
+        })
+        .populate({
+            path: 'detalles.menu',
+            model: 'Menu'
+        })
+        .populate({
+            path: 'detalles.alumno',
+            model: 'Alumno'
+        })
+}
+
+exports.getPedidosByUsuario = (req, res) => {
+    console.log(req.body);
+    Pedido.find({ usuario: req.body.id }, (err, pedidos) => {
+        if (err) return res.status(500).json({ error: err });
+
+        return res.status(200).json(pedidos);
     })
-    .populate({
-        path: 'detalles.menu',
-        model: 'Menu'
-    })
-    .populate({
-        path: 'detalles.alumno',
-        model: 'Alumno'
-    })
+        .populate({
+            path: 'usuario',
+            model: 'Usuario'
+        })
+        .populate({
+            path: 'detalles.menu',
+            model: 'Menu'
+        })
+        .populate({
+            path: 'detalles.alumno',
+            model: 'Alumno'
+        })
 }
 
 exports.getByDate = (req, res) => {
@@ -32,7 +53,7 @@ exports.createPedido = (req, res) => {
     var total = 0;
 
     var cantidad = menu['0'].total;
-    var usuario  = menu['1'].usuario;
+    var usuario = menu['1'].usuario;
 
     console.log("USUARIO")
     console.log(usuario);
@@ -50,11 +71,11 @@ exports.createPedido = (req, res) => {
         })
         total += Number(menu[String(i)].precio) * Number(menu[String(i)].cantidad);
     }
-    
+
     pedido.total = total;
     pedido.pagado = false;
     pedido.save((err, pedido) => {
-        if (err) return res.status(500).json({error: err});
+        if (err) return res.status(500).json({ error: err });
 
         return res.status(200).json({
             mensaje: "Pedido creado exitosamente",
