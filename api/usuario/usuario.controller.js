@@ -106,10 +106,10 @@ exports.createAdmin = (req, res) => {
     })
 }
 
-exports.createSecretaria = (req, res) => {
+exports.createRecepcion = (req, res) => {
     var usuario = new Usuario();
 
-    usuario.nombre = "Secretaria";
+    usuario.nombre = "Recepcion";
     usuario.apellido_paterno = "Educativo";
     usuario.apellido_materno = "Kipling";
     usuario.direccion = "Ojo de Agua";
@@ -117,7 +117,7 @@ exports.createSecretaria = (req, res) => {
     usuario.telefono = "5610966743";
     usuario.usuario = "sec_kipling2018";
     usuario.password = "sec_kipling2018";
-    usuario.tipo = "secretaria";
+    usuario.tipo = "recepcion";
     usuario.puntos = 500;
 
     console.log(usuario);
@@ -129,7 +129,36 @@ exports.createSecretaria = (req, res) => {
         })
 
         return res.status(200).json({
-            mensaje: "Administrador Registrado",
+            mensaje: "Recepcionista Registrado",
+            usuario: usuario
+        });
+    })
+}
+
+exports.createCafeteria = (req, res) => {
+    var usuario = new Usuario();
+
+    usuario.nombre = "Cafeteria";
+    usuario.apellido_paterno = "Educativo";
+    usuario.apellido_materno = "Kipling";
+    usuario.direccion = "Ojo de Agua";
+    usuario.email = "centro.educativo.kipling@gmail.com";
+    usuario.telefono = "5610966743";
+    usuario.usuario = "sec_kipling2018";
+    usuario.password = "sec_kipling2018";
+    usuario.tipo = "cafeteria";
+    usuario.puntos = 500;
+
+    console.log(usuario);
+
+    usuario.save((err, ciclos) => {
+        if (err) return res.json({
+            mensaje: "error",
+            err: err
+        })
+
+        return res.status(200).json({
+            mensaje: "Cafeteria Registrado",
             usuario: usuario
         });
     })

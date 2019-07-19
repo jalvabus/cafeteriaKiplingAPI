@@ -2,8 +2,8 @@ module.exports = {
     PORT: 14142,
     SECRET: 'KIPLING0219',
     DATABASE: {
-        URL: 'mongodb://207.38.94.126:13741/cafeteriaKipling'
-        //URL: 'mongodb://localhost:27017/cafeteriaKipling'
+        //URL: 'mongodb://207.38.94.126:13741/cafeteriaKipling'
+        URL: 'mongodb://localhost:27017/cafeteriaKipling'
     },
     PAYPAL: {
         MODE: 'sandbox',

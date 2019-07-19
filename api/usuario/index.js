@@ -13,6 +13,7 @@ router.post('/addPuntos/:id', controller.addPuntos);
 router.post('/removePuntos/:id', controller.removePuntos);
 
 router.get('/regAdmin', controller.createAdmin);
-router.get('/regSec', controller.createSecretaria);
+router.get('/regRecepcion', controller.createRecepcion);
+router.get('/regCafeteria', controller.createCafeteria);
 
 module.exports = router;

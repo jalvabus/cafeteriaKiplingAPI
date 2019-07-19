@@ -1,4 +1,5 @@
 var Pedido = require('./pedido.model');
+var Usuario = require('../usuario/usuario.model');
 var mongoose = require('mongoose');
 
 exports.getAll = (req, res) => {
@@ -20,6 +21,47 @@ exports.getAll = (req, res) => {
             model: 'Alumno'
         })
 }
+
+exports.getNoPagados = (req, res) => {
+    Pedido.find({ pagado: false }, (err, pedidos) => {
+        if (err) return res.status(500).json({ error: err });
+
+        return res.status(200).json(pedidos);
+    })
+        .populate({
+            path: 'usuario',
+            model: 'Usuario'
+        })
+        .populate({
+            path: 'detalles.menu',
+            model: 'Menu'
+        })
+        .populate({
+            path: 'detalles.alumno',
+            model: 'Alumno'
+        })
+}
+
+exports.getNoEntregados = (req, res) => {
+    Pedido.find({ 'detalles.entregado' : false }, (err, pedidos) => {
+        if (err) return res.status(500).json({ error: err });
+
+        return res.status(200).json(pedidos);
+    })
+        .populate({
+            path: 'usuario',
+            model: 'Usuario'
+        })
+        .populate({
+            path: 'detalles.menu',
+            model: 'Menu'
+        })
+        .populate({
+            path: 'detalles.alumno',
+            model: 'Alumno'
+        })
+}
+
 
 exports.getPedidosByUsuario = (req, res) => {
     console.log(req.body);
@@ -44,6 +86,82 @@ exports.getPedidosByUsuario = (req, res) => {
 
 exports.getByDate = (req, res) => {
 
+}
+
+exports.entregarPedido = (req, res) => {
+    console.log(req.body);
+
+    Pedido.findOne({ _id: req.body.idPedido }, (err, pedido) => {
+
+        var pedidoEncontrado = pedido;
+        console.log(pedidoEncontrado);
+
+        pedidoEncontrado.detalles.forEach((pedidoEcontrado) => {
+            console.log(pedidoEcontrado)
+            if (String(pedidoEcontrado._id) === String(req.body.idDetalle)) {
+                console.log("PEDIDO ENCONTRADO");
+                console.log(pedidoEcontrado);
+
+                pedidoEcontrado.entregado = true;
+
+                pedidoEncontrado.save((err, pedidoGuardado) => {
+                    if (err) return res.status(500).json({ error: err });
+
+                    return res.status(200).json({
+                        pedido: pedidoGuardado,
+                        mensaje: "Se ah entregado el pedido"
+                    });
+                })
+
+            }
+        })
+    })
+        .populate({
+            path: 'usuario',
+            model: 'Usuario'
+        })
+        .populate({
+            path: 'detalles.menu',
+            model: 'Menu'
+        })
+        .populate({
+            path: 'detalles.alumno',
+            model: 'Alumno'
+        })
+}
+
+exports.pagoPedido = (req, res) => {
+
+    Pedido.findOne({ _id: req.body.id }, (err, pedido) => {
+
+
+        var pedidoEcontrado = pedido;
+
+        pedidoEcontrado.pagado = true;
+
+        pedidoEcontrado.save((err, pedidoGuardado) => {
+            if (err) return res.status(500).json({ error: err });
+
+            return res.status(200).json({
+                pedido: pedidoGuardado,
+                mensaje: "Se ah pagado el pedido"
+            });
+        })
+
+
+    })
+        .populate({
+            path: 'usuario',
+            model: 'Usuario'
+        })
+        .populate({
+            path: 'detalles.menu',
+            model: 'Menu'
+        })
+        .populate({
+            path: 'detalles.alumno',
+            model: 'Alumno'
+        })
 }
 
 exports.createPedido = (req, res) => {
@@ -73,7 +191,9 @@ exports.createPedido = (req, res) => {
     }
 
     pedido.total = total;
-    pedido.pagado = false;
+    pedido.pagado = true;
+
+
     pedido.save((err, pedido) => {
         if (err) return res.status(500).json({ error: err });
 
@@ -81,5 +201,5 @@ exports.createPedido = (req, res) => {
             mensaje: "Pedido creado exitosamente",
             pedido: pedido
         })
-    })
+    });
 }
